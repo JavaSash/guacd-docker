@@ -1,3 +1,52 @@
+# Fork info
+If you have legacy code that uses older versions of guacamole (0.9.9 in my case) and you are trying to make friends 
+with a newer version of guacd (I have 1.5.4) that are not backward compatible, then this will help you build 
+guacd 0.9.9 from the sources.
+
+To build a docker image, you just need to call the command from the Dockerfile directory
+
+`
+docker build -t guacd:0.9.9 .
+`
+
+### More info about my pain and this fork
+
+I had legacy service with old dependencies: 
+
+        <dependency>
+            <groupId>org.glyptodon.guacamole</groupId>
+            <artifactId>guacamole-common</artifactId>
+            <version>0.9.9</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.guacamole</groupId>
+            <artifactId>guacamole-common-js</artifactId>
+            <version>1.0.0</version>
+            <type>zip</type>
+            <scope>runtime</scope>
+        </dependency>
+
+And problem with upper version of guacd 1.5.4:
+
+`
+guacd[1]: ERROR:    Guacamole protocol violation. Perhaps the version of guacamole-client is incompatible with this version of guacd?
+`
+
+The guacd 0.9.9 image is no longer in the docker hub. It has been relevant for a very long time, since then Apache 
+even managed to buy out glyptodon, which wrote guacamole.
+
+I had to build it from source https://github.com/glyptodon/guacd-docker/releases/tag/0.9.9
+
+But it is not so easy to assemble an image from a .tarfile from a github.
+
+I had to fix the Dockerfile, the build script ([download-guacd.sh ](bin%2Fdownload-guacd.sh )) and a couple of files that
+broke due to raising the C version, as I understand it.
+
+And after a couple of days of torment, the image is ready.
+
+Next comes the information from the maintainer.
+
 What is guacd?
 ==============
 
